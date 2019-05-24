@@ -10,7 +10,7 @@ public class MyView {
     private View mCurrent;
     private LayoutInflater mLayoutInflater;
 
-    private TextView titleBar;
+
     //构造函数
     public MyView(Activity context){
         this.context = context;
@@ -21,8 +21,6 @@ public class MyView {
     }
     private void init(){
         mCurrent = mLayoutInflater.inflate(R.layout.actvity_my,null);
-        titleBar = mCurrent.findViewById(R.id.main_title_bar);
-
     }
     public View getView (){
         if(mCurrent == null){

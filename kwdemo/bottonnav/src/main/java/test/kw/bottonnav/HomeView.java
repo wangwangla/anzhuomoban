@@ -11,7 +11,7 @@ public class HomeView {
     private View mCurrent;
     private LayoutInflater mLayoutInflater;
     //页面资源
-    private TextView titleBar;
+
     //构造函数
     public HomeView(Activity context){
         this.context = context;
@@ -22,7 +22,6 @@ public class HomeView {
     }
     private void init(){
         mCurrent = mLayoutInflater.inflate(R.layout.activity_home,null);
-        titleBar = mCurrent.findViewById(R.id.main_title_bar);
     }
     public View getView (){
         if(mCurrent == null){

@@ -1,5 +1,7 @@
 package test.kw.bottonnav;
 
+import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -8,10 +10,10 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     private FrameLayout frameLayout;
     private HomeView homeView ;
-    private study s;
+    private ContentView s;
     private MyView myView;
 
     private TextView textView ;
@@ -22,9 +24,8 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    textView.setText("首页");
+                    textView.setText(R.string.title_home);
                     if(homeView==null){
-                        textView.setText("首页");
                         homeView = new HomeView(MainActivity.this);
                         frameLayout.addView(homeView.getView());
                     }else {
@@ -35,10 +36,9 @@ public class MainActivity extends AppCompatActivity {
                     homeView.showView();
                     return true;
                 case R.id.navigation_dashboard:
-                    textView.setText("内容");
+                    textView.setText(R.string.title_dashboard);
                     if(s==null){
-
-                        s = new study(MainActivity.this);
+                        s = new ContentView(MainActivity.this);
                         frameLayout.addView(s.getView());
                     }else {
                         s.getView();
@@ -48,9 +48,8 @@ public class MainActivity extends AppCompatActivity {
                     s.showView();
                     return true;
                 case R.id.navigation_notifications:
-                    textView.setText("我的");
+                    textView.setText(R.string.title_notifications);
                     if(myView==null){
-                        textView.setText("我的");
                         myView = new MyView(MainActivity.this);
                         frameLayout.addView(myView.getView());
                     }else {
@@ -77,12 +76,13 @@ public class MainActivity extends AppCompatActivity {
     }
     public void init(){
         textView = findViewById(R.id.main_title_bar);
-        frameLayout.addView(homeView.getView());
-        s = new study(MainActivity.this);
+        s = new ContentView(MainActivity.this);
         frameLayout.addView(s.getView());
         myView = new MyView(MainActivity.this);
         frameLayout.addView(myView.getView());
-        textView.setText("首页");
+        textView.setText(R.string.title_home);
         homeView = new HomeView(MainActivity.this);
+        frameLayout.addView(homeView.getView());
+        textView.setTextColor(Color.parseColor("#000000"));
     }
 }
