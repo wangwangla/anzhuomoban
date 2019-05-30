@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<!--可以层叠-->
+    <!--背景颜色-->
+    <item android:id="@android:id/background"
+        android:drawable="@color/loading_web_bg_color"></item>
+    <item android:id="@android:id/progress">
+        <!--定义形状-->
+        <clip>
+            <shape>
+                <!--颜色渐变-->
+                <gradient android:startColor="@color/progress_start_color"
+                    android:centerColor="@color/progress_center_color"
+                    android:endColor="@color/progress_end_color"></gradient>
+            </shape>
+        </clip>
+    </item>
+</layer-list>

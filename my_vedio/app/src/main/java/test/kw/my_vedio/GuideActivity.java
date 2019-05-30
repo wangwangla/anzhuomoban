@@ -2,10 +2,11 @@ package test.kw.my_vedio;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,6 +93,16 @@ public class GuideActivity extends Activity implements ViewPager.OnPageChangeLis
             if (mImageView!=null){
                 if(mViewList.size()>0){
                     container.addView(mViewList.get(position));
+                    if(position == mViewList.size()-1){
+                        ImageView imageView = mImageView.get(position).findViewById(R.id.iv_start);
+                        imageView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                startHomeActivity();
+                                setGuid();
+                            }
+                        });
+                    }
                     return mViewList.get(position);
                 }
             }
@@ -113,6 +124,19 @@ public class GuideActivity extends Activity implements ViewPager.OnPageChangeLis
             return view == o;
         }
     }
+
+    private void startHomeActivity() {
+        Intent intent = new Intent(GuideActivity.this,HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void setGuid(){
+        SharedPreferences sharedPreferences = getSharedPreferences("config",MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean("mIsFirstIn",false);
+        sharedPreferences.edit().commit();
+    }
+
     private void initView() {
         LayoutInflater inflater = LayoutInflater.from(this);
         mViewList = new ArrayList<>();
