@@ -1,4 +1,4 @@
-package test.kw.my_video;
+package test.kw.my_video.activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -6,6 +6,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import test.kw.my_video.Constant;
+import test.kw.my_video.R;
 
 public class SplashActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences ;

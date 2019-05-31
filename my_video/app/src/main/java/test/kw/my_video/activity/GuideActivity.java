@@ -1,4 +1,4 @@
-package test.kw.my_video;
+package test.kw.my_video.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +16,8 @@ import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import test.kw.my_video.R;
 
 public class GuideActivity extends Activity implements ViewPager.OnPageChangeListener{
     //将页面的布局放入一个list中
@@ -74,11 +75,18 @@ public class GuideActivity extends Activity implements ViewPager.OnPageChangeLis
         pos = 0;
         mDotsList[0].setEnabled(true);
     }
+
     @Override
     public void onPageScrolled(int i, float v, int i1) {
 
     }
 
+    /**
+     * 演示哪一个被选中
+     * 我们确定出当前的，然后将当前的设置为选中，将上一个设置为未选中
+     * 重新的记录被选中的点
+     * @param i
+     */
     @Override
     public void onPageSelected(int i) {
         setCurremtDotPosition(i);
@@ -94,6 +102,9 @@ public class GuideActivity extends Activity implements ViewPager.OnPageChangeLis
 
     }
 
+    /**
+     * 适配器实现几个方法
+     */
     class MyPaperAdapter extends PagerAdapter {
         private List<View> mViewList;
         private Context context;
@@ -119,13 +130,21 @@ public class GuideActivity extends Activity implements ViewPager.OnPageChangeLis
             return view == o;
         }
 
+        /**
+         * 设置显示的页面
+         * @param container
+         * @param position
+         * @return
+         */
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             if (mViewList != null) {
                 if (mViewList.size() > 0) {
+                    //container显示的页面，将需要显示的页面加入到当前的显示列表中
                     container.addView(mViewList.get(position));
                     if (position == mViewList.size() - 1) {
+                        //最后一个页面他有一个点击按钮的处理
                         ImageView imageView = mViewList.get(position).findViewById(R.id.iv_start);
                         imageView.setOnClickListener(new View.OnClickListener() {
                             @Override
