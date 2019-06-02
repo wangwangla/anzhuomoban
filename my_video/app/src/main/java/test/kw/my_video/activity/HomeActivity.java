@@ -14,7 +14,9 @@ public class HomeActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-
+        setSupportActionBar();
+        setActionBarIcon(R.drawable.app_inco);
+        setTitle("首页");
     }
 
     /**

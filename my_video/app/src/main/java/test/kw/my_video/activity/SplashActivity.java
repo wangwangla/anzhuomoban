@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import test.kw.my_video.Constant;
-import test.kw.my_video.R;
 
 public class SplashActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences ;

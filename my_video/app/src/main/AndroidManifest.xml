@@ -9,15 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.GuideActivity" />
-        <activity android:name=".activity.HomeActivity"></activity>
+        <activity android:name=".GuideActivity" />
+        <activity android:name=".HomeActivity" />
+        <activity
+            android:name=".AActivity"
+            android:label="@string/title_activity_a"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

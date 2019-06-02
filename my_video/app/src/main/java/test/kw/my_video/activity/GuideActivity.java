@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-import test.kw.my_video.R;
 
 public class GuideActivity extends Activity implements ViewPager.OnPageChangeListener{
     //将页面的布局放入一个list中
