@@ -1,11 +1,14 @@
 package test.kw.accountapp;
 
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
+
+import test.kw.accountapp.adapter.ViewPagerAdapter;
 
 /**
  * 1.写一个消费信息bean类
@@ -15,6 +18,8 @@ import com.robinhood.ticker.TickerView;
  *
  */
 public class MainActivity extends AppCompatActivity {
+    private ViewPager viewPager;
+    private ViewPagerAdapter viewPagerAdapter ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,14 +27,11 @@ public class MainActivity extends AppCompatActivity {
         RecordBean recordBean = new RecordBean();
         //消除阴影
         getSupportActionBar().setElevation(0);
-/*        final TickerView tickerView = findViewById(R.id.tickerView);
-        tickerView.setCharacterList(TickerUtils.getDefaultNumberList());
-        tickerView.setText("43");
-        tickerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                tickerView.setText("sssssssssss");
-            }
-        });*/
+        viewPager = findViewById(R.id.view_paper);
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter.notifyDataSetChanged();;
+        viewPager.setAdapter(viewPagerAdapter);
+        //调整顺序
+        viewPager.setCurrentItem(viewPagerAdapter.getCurrentItem());
     }
 }
