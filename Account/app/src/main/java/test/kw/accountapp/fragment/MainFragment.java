@@ -11,7 +11,11 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.LinkedList;
+
 import test.kw.accountapp.R;
+import test.kw.accountapp.RecordBean;
+import test.kw.accountapp.adapter.ListViewAdapter;
 
 @SuppressLint("ValidFragment")
 public class MainFragment extends Fragment {
@@ -19,11 +23,18 @@ public class MainFragment extends Fragment {
     private ListView listView;
     private String data="";
     private View rootView;
+
+    private LinkedList<RecordBean> linkedList;
+
+    private ListViewAdapter listViewAdapter;
     @SuppressLint("ValidFragment")
     public MainFragment(String date){
         this.data = date;
-
-
+        linkedList.add(new RecordBean());
+        linkedList.add(new RecordBean());
+        linkedList.add(new RecordBean());
+        linkedList.add(new RecordBean());
+        linkedList.add(new RecordBean());
     }
     @Nullable
     @Override
@@ -37,5 +48,11 @@ public class MainFragment extends Fragment {
         textView = rootView.findViewById(R.id.day_text);
         listView = rootView.findViewById(R.id.list_view);
         textView.setText(data);
+        listView.setAdapter(listViewAdapter);
+        listViewAdapter = new ListViewAdapter(getContext());
+        listViewAdapter.setData(linkedList);
+        if(listViewAdapter.getCount()>0){
+            rootView.findViewById(R.id.no_record).setVisibility(View.GONE);
+        }
     }
 }
