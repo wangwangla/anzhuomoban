@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setElevation(0);
         viewPager = findViewById(R.id.view_paper);
         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPagerAdapter.notifyDataSetChanged();;
+        viewPagerAdapter.notifyDataSetChanged();
         viewPager.setAdapter(viewPagerAdapter);
-        //调整顺序
+         //调整顺序
         viewPager.setCurrentItem(viewPagerAdapter.getCurrentItem());
     }
 }

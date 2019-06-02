@@ -24,11 +24,12 @@ public class MainFragment extends Fragment {
     private String data="";
     private View rootView;
 
-    private LinkedList<RecordBean> linkedList;
+    private LinkedList<RecordBean> linkedList = null;
 
     private ListViewAdapter listViewAdapter;
     @SuppressLint("ValidFragment")
     public MainFragment(String date){
+        linkedList = new LinkedList<>();
         this.data = date;
         linkedList.add(new RecordBean());
         linkedList.add(new RecordBean());
@@ -48,8 +49,8 @@ public class MainFragment extends Fragment {
         textView = rootView.findViewById(R.id.day_text);
         listView = rootView.findViewById(R.id.list_view);
         textView.setText(data);
-        listView.setAdapter(listViewAdapter);
         listViewAdapter = new ListViewAdapter(getContext());
+        listView.setAdapter(listViewAdapter);
         listViewAdapter.setData(linkedList);
         if(listViewAdapter.getCount()>0){
             rootView.findViewById(R.id.no_record).setVisibility(View.GONE);

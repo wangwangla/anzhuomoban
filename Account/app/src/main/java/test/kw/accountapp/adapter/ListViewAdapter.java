@@ -24,7 +24,7 @@ public class ListViewAdapter extends BaseAdapter {
     private Context context;
     public ListViewAdapter(Context context){
         this.context = context;
-        layoutInflater.from(context);
+        layoutInflater=LayoutInflater.from(context);
     }
 
     //设置参数
@@ -59,7 +59,7 @@ public class ListViewAdapter extends BaseAdapter {
         }else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-        return null;
+        return convertView;
     }
 
 
