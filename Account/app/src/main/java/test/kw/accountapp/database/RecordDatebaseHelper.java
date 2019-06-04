@@ -88,7 +88,7 @@ public class RecordDatebaseHelper extends SQLiteOpenHelper {
         LinkedList<RecordBean> linkedList = new LinkedList<>();
         SQLiteDatabase database = this.getWritableDatabase();
         //查询表   条件是日期   排序方式是时间
-        String sql = "select DIS * from Record where date = ? order by time asc";
+        String sql = "select * from Record where date = ? order by time asc";
         Cursor cursor = database.rawQuery(sql,new String[]{dataStr});
         if (cursor.moveToFirst()){
             do{

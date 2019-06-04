@@ -1,14 +1,14 @@
 package test.kw.accountapp;
 
+import android.content.Intent;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.robinhood.ticker.TickerUtils;
-import com.robinhood.ticker.TickerView;
 
 import test.kw.accountapp.adapter.ViewPagerAdapter;
+import test.kw.accountapp.util.GlobalUtil;
 
 /**
  * 1.写一个消费信息bean类
@@ -33,5 +33,15 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(viewPagerAdapter);
          //调整顺序
         viewPager.setCurrentItem(viewPagerAdapter.getCurrentItem());
+        findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,AddRecordActivity.class);
+                startActivity(intent);
+             }
+        });
+        GlobalUtil.getInstance().setContext(getApplicationContext());
+
+        GlobalUtil.getInstance().datebaseHelper.readRecord("209-2");
     }
 }
