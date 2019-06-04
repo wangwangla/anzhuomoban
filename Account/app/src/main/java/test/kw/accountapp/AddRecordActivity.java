@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import test.kw.accountapp.adapter.CategoryAdapter;
@@ -18,13 +19,21 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
     private CategoryAdapter categoryAdapter;
     //更新顶部钱数
     private TextView amountText;
+    //
+    private String category = "General";
+    //消费类型  花费
+    private RecordBean.RecordType type = RecordBean.RecordType.RECODE_TYPR_EXPENSE;
+    private String remark = category;
+
+    private EditText editText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_record);
         amountText = findViewById(R.id.textView_amount);
+        editText = findViewById(R.id.editText);
+        editText.setText(remark);
         initKeyBoard();
-
         recyclerView = findViewById(R.id.recyclerView);
         categoryAdapter = new CategoryAdapter(getApplicationContext());
         recyclerView.setAdapter(categoryAdapter);

@@ -8,6 +8,9 @@ import java.util.LinkedList;
 
 import test.kw.accountapp.fragment.MainFragment;
 
+/**
+ * ViewPaper适配器
+ */
 public class ViewPagerAdapter extends FragmentPagerAdapter {
     //ViewPaper维护fragment
     private LinkedList<MainFragment> fragments = new LinkedList<>();

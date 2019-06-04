@@ -41,7 +41,7 @@ public class CategoryAdapter extends  RecyclerView.Adapter<CategoryView>{
         final CategoryBean res = linkedList.get(i);
         categoryView.imageView.setImageResource(res.resBlack);
         categoryView.textView.setText(res.title);
-        if (categoryView.textView.toString()==selected){
+        if (categoryView.textView.toString().equals(selected)){
             categoryView.background.setBackgroundResource(R.drawable.bg_edit_text);
         }else {
             categoryView.background.setBackgroundResource(R.color.colorPrimary);
@@ -51,6 +51,12 @@ public class CategoryAdapter extends  RecyclerView.Adapter<CategoryView>{
     @Override
     public int getItemCount() {
         return linkedList.size();
+    }
+
+    //点击
+
+    public interface OnCategoryClickListener{
+        void onClick(String category);
     }
 }
 
