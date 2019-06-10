@@ -11,8 +11,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import test.kw.accountapp.adapter.CategoryAdapter;
+import test.kw.accountapp.util.GlobalUtil;
 
-public class AddRecordActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddRecordActivity extends AppCompatActivity implements View.OnClickListener ,CategoryAdapter.OnCategoryClickListener {
     //对于数组的操作
     private String userInput = "";
     private RecyclerView recyclerView;
@@ -40,13 +41,21 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(),4);
         recyclerView.setLayoutManager(gridLayoutManager);
         categoryAdapter.notifyDataSetChanged();
+
+        categoryAdapter.setOnCategoryClickListener(this);
     }
 
     public void getKeyboardType(){
         findViewById(R.id.keyboard_type).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("KW_KWY_TEST","TYPE=======================");
+                if(type == RecordBean.RecordType.RECODE_TYPR_EXPENSE){
+                    type =RecordBean.RecordType.RECODE_TYPR_INCOME;
+                }else {
+                    type = RecordBean.RecordType.RECODE_TYPR_EXPENSE;
+                }
+                categoryAdapter.changeType(type);
+                category = categoryAdapter.getSelected();
             }
         });
     }
@@ -72,9 +81,20 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
         findViewById(R.id.keyboard_done).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (userInput.equals("")) {
+                if (!userInput.equals("")) {
                     double amount = Double.valueOf(userInput);
-                    Log.d("KW_KWY_TEST",amount+"KEYBOR____DONE=======================");
+                    RecordBean recordBean = new RecordBean();
+                    recordBean.setAmount(amount);
+                    if (type == RecordBean.RecordType.RECODE_TYPR_EXPENSE){
+                        recordBean.setRecordType(1);
+                    }else {
+                        recordBean.setRecordType(2);
+                    }
+                    recordBean.setCategory(categoryAdapter.getSelected());
+                    recordBean.setRemark(editText.getText().toString());
+                    GlobalUtil.getInstance().datebaseHelper.addRecord(recordBean);
+                    Log.d("Insert",recordBean.getUuid());
+                    finish();
                 }
             }
         });
@@ -150,5 +170,11 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
         getKeyboardBack();
         getKeyboardDone();
         getKeyboardType();
+    }
+
+    @Override
+    public void onClick(String category) {
+        this.category =category;
+        editText.setText(category);
     }
 }

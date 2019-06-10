@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import test.kw.accountapp.R;
 import test.kw.accountapp.RecordBean;
 import test.kw.accountapp.adapter.ListViewAdapter;
+import test.kw.accountapp.util.GlobalUtil;
 
 @SuppressLint("ValidFragment")
 public class MainFragment extends Fragment {
@@ -24,18 +25,13 @@ public class MainFragment extends Fragment {
     private String data="";
     private View rootView;
 
-    private LinkedList<RecordBean> linkedList = null;
+    private LinkedList<RecordBean> linkedList = new LinkedList<>();;
 
     private ListViewAdapter listViewAdapter;
     @SuppressLint("ValidFragment")
     public MainFragment(String date){
-        linkedList = new LinkedList<>();
         this.data = date;
-        linkedList.add(new RecordBean());
-        linkedList.add(new RecordBean());
-        linkedList.add(new RecordBean());
-        linkedList.add(new RecordBean());
-        linkedList.add(new RecordBean());
+        linkedList = GlobalUtil.getInstance().datebaseHelper.readRecord(date);
     }
     @Nullable
     @Override

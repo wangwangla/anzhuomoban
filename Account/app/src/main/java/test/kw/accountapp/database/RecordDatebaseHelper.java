@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -57,6 +58,8 @@ public class RecordDatebaseHelper extends SQLiteOpenHelper {
         values.put("date",recordBean.getDate());
         values.put("time",recordBean.getTimeStamp());
         database.insert(DB_NAME,null,values);
+        values.clear();
+        Log.d("Insert",recordBean.toString());
     }
 
     /**
@@ -123,7 +126,7 @@ public class RecordDatebaseHelper extends SQLiteOpenHelper {
     public LinkedList<String> getAvaliableDate(){
         LinkedList<String> linkedList = new LinkedList<>();
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select DISTINCE * FROM Record ORDER BY DATE ASC",new String[]{});
+        Cursor cursor = db.rawQuery("select * FROM Record ORDER BY DATE ASC",new String[]{});
         if (cursor.moveToFirst()){
             do{
                 String date = cursor.getString(cursor.getColumnIndex("date"));

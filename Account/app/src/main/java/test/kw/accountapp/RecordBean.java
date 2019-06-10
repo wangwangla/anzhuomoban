@@ -27,6 +27,19 @@ public class RecordBean {
     //日期
     private String date;
 
+    @Override
+    public String toString() {
+        return "RecordBean{" +
+                "amount=" + amount +
+                ", recordType=" + recordType +
+                ", category='" + category + '\'' +
+                ", remark='" + remark + '\'' +
+                ", date='" + date + '\'' +
+                ", timeStamp=" + timeStamp +
+                ", uuid='" + uuid + '\'' +
+                '}';
+    }
+
     public double getAmount() {
         return amount;
     }

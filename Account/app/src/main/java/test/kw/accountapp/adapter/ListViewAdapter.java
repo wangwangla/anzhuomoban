@@ -8,12 +8,16 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.robinhood.ticker.TickerView;
+
 import org.w3c.dom.Text;
 
 import java.util.LinkedList;
 
 import test.kw.accountapp.R;
 import test.kw.accountapp.RecordBean;
+import test.kw.accountapp.util.DateUtil;
+import test.kw.accountapp.util.GlobalUtil;
 
 public class ListViewAdapter extends BaseAdapter {
     //每天的好多个账目
@@ -72,10 +76,16 @@ class ViewHolder {
     ImageView imageView;
     public ViewHolder(View itemView , RecordBean recordBean){
         remarkTV = itemView.findViewById(R.id.textview_remark);
-        amountTV = itemView.findViewById(R.id.amount_text);
         timeTV = itemView.findViewById(R.id.textview_time);
-        itemView = itemView.findViewById(R.id.imageView_category);
-       // remarkTV.setText(recordBean.getRemark());
-
+        imageView = itemView.findViewById(R.id.imageView_category);
+        amountTV = itemView.findViewById(R.id.textview_amount);
+        remarkTV.setText(recordBean.getRemark());
+        if (recordBean.getRecordType() == 1){
+            amountTV.setText("-"+recordBean.getAmount());
+        }else {
+            amountTV.setText("+"+recordBean.getAmount());
+        }
+        timeTV.setText(DateUtil.getFormattedTime(recordBean.getTimeStamp()));
+        imageView.setImageResource(GlobalUtil.getInstance().getResourceIcon(recordBean.getCategory()));
     }
 }

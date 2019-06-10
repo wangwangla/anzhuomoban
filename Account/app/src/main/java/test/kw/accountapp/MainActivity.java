@@ -5,7 +5,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
+
+import com.robinhood.ticker.TickerView;
 
 import test.kw.accountapp.adapter.ViewPagerAdapter;
 import test.kw.accountapp.util.GlobalUtil;
@@ -24,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        GlobalUtil.getInstance().setContext(getApplicationContext());
         RecordBean recordBean = new RecordBean();
         //消除阴影
         getSupportActionBar().setElevation(0);
@@ -40,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
              }
         });
-        GlobalUtil.getInstance().setContext(getApplicationContext());
+
 
         GlobalUtil.getInstance().datebaseHelper.readRecord("209-2");
     }

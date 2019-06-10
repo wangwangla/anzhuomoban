@@ -62,7 +62,7 @@ public class GlobalUtil {
     private static String[] costTitle = {"General", "Food", "Drinks","Groceries", "Shopping", "Personal","Entertain","Movies", "Social", "Transport",
             "App Store","Mobile","Computer","Gifts", "Housing", "Travel","Tickets","Books", "Medical","Transfer"};
 
-    private static int[] earnIconRes = {
+    public static int[] earnIconRes = {
             R.drawable.icon_general_white,
             R.drawable.icon_reimburse_white,
             R.drawable.icon_salary_white,
@@ -83,7 +83,7 @@ public class GlobalUtil {
     private static String[] earnTitle = {"General", "Reimburse", "Salary","RedPocket","Part-time", "Bonus","Investment"};
 
     public LinkedList<CategoryBean> costRes = new LinkedList<>();
-    private LinkedList<CategoryBean> earnRes = new LinkedList<>();
+    public LinkedList<CategoryBean> earnRes = new LinkedList<>();
     private static GlobalUtil instance;
     private Context context;
     public RecordDatebaseHelper datebaseHelper;
@@ -133,4 +133,6 @@ public class GlobalUtil {
         }
         return costRes.get(0).resWhite;
     }
+
+
 }
