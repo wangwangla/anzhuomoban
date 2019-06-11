@@ -27,7 +27,10 @@ public class MyFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (currPager!=null&&!currPager.isInitDate){
+            currPager.initData();
+            currPager.isInitDate = true;
+        }
         return currPager.rootview;
     }
-
 }

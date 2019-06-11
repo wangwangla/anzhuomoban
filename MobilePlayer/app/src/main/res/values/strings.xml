@@ -5,4 +5,5 @@
     <string name="local_audio">本地音乐</string>
     <string name="net_video">网络视频</string>
     <string name="net_audio">网络音乐</string>
+    <string name="all_net_search">全网速索</string>
 </resources>

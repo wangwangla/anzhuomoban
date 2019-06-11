@@ -1,14 +1,9 @@
 package test.kw.mobileplayer;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 
@@ -44,7 +39,7 @@ public class Maintivity extends FragmentActivity {
         basePagers.add(new NetVideoPager(this));
         basePagers.add(new AudioPager(this));
         basePagers.add(new NetAudioPager(this));
-        basePagers.get(0).initData();
+
         //遍历哪一个被点击了
         rg_buttom_tag.setOnCheckedChangeListener(new MyOnCheckedChangeListener());
         rg_buttom_tag = findViewById(R.id.rg_buttom_tag);
@@ -80,9 +75,7 @@ public class Maintivity extends FragmentActivity {
         //2、开始事物
         FragmentTransaction ft = manager.beginTransaction();
         //3、替换
-
         ft.replace(R.id.fl_main_content,new MyFragment(basePagers.get(position)));
-        basePagers.get(position).initData();
         //4、提交
         ft.commit();
     }
