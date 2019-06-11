@@ -19,6 +19,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import test.kw.mobileplayer.R;
+import test.kw.mobileplayer.adapter.VideoPagerAdapter;
 import test.kw.mobileplayer.base.BasePager;
 import test.kw.mobileplayer.domain.MediaItem;
 import test.kw.mobileplayer.utils.Utils;
@@ -53,7 +54,7 @@ public class VideoPager extends BasePager {
             if (arrayList!=null&&arrayList.size()>0){
                 //设置适配器，文本和进度条隐藏
                 //文本隐藏
-                listView.setAdapter(new VideoPagerAdapter());
+                listView.setAdapter(new VideoPagerAdapter(context,arrayList));
                 tv_media.setVisibility(View.GONE);
             }else {
                 tv_media.setVisibility(View.VISIBLE);
@@ -124,50 +125,6 @@ public class VideoPager extends BasePager {
             }
         }.start();
     }
-    class VideoPagerAdapter extends BaseAdapter{
 
-        @Override
-        public int getCount() {
-                return arrayList.size();
-        }
 
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder ;
-            if (convertView==null){
-                convertView = View.inflate(context,R.layout.item_video_pager,null);
-                viewHolder = new ViewHolder();
-                viewHolder.iv_icon = convertView.findViewById(R.id.iv_icon);
-                viewHolder.tv_name = convertView.findViewById(R.id.tv_name);
-                viewHolder.tv_time = convertView.findViewById(R.id.tv_time);
-                viewHolder.tv_size = convertView.findViewById(R.id.tv_size);
-                convertView.setTag(viewHolder);
-            }else {
-                viewHolder = (ViewHolder)convertView.getTag();
-            }
-            //得到数据
-            MediaItem mediaItem = arrayList.get(position);
-            viewHolder.tv_name.setText(mediaItem.getName());
-            viewHolder.tv_size.setText(Formatter.formatFileSize(context,mediaItem.getSize()));
-            viewHolder.tv_time.setText(utils.stringForTime((int)mediaItem.getDuration()));
-
-            return convertView;
-        }
-    }
-    static class ViewHolder {
-        ImageView iv_icon;
-        TextView tv_name;
-        TextView tv_time;
-        TextView tv_size;
-    }
 }
