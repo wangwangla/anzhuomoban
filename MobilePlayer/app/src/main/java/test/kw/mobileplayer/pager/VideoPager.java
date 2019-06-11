@@ -2,29 +2,35 @@ package test.kw.mobileplayer.pager;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
+import test.kw.mobileplayer.R;
 import test.kw.mobileplayer.base.BasePager;
 
 /*本地视频
  */
 public class VideoPager extends BasePager {
+    //初始化
+    private ListView listView;
+    private TextView tv_media;
+    private ProgressBar progressBar;
     public VideoPager(Context context){
         super(context);
     }
-    private TextView textView ;
-
+    private View view;
     @Override
     public View initView() {
-        textView = new TextView(context);
-        textView.setTextSize(40);
-        return textView;
+        view = View.inflate(context, R.layout.video_pager,null);
+        listView = view.findViewById(R.id.listView);
+        tv_media = view.findViewById(R.id.tv_nomedia);
+        progressBar = view.findViewById(R.id.pb_loading);
+        return view;
     }
 
     @Override
     public void initData() {
-        textView.setText("本地视频");
+
     }
 }
