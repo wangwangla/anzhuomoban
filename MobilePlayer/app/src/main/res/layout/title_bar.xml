@@ -24,6 +24,7 @@
         android:textColor="@drawable/tv_search_textcolor_selector"
         android:layout_height="wrap_content" />
     <RelativeLayout
+        android:id="@+id/rl_game"
         android:layout_marginLeft="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
