@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<test.kw.mobileplayer.view.TitleBar xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="horizontal"
     android:background="#ff3097fd"
@@ -47,4 +47,4 @@
         android:layout_height="wrap_content" />
 
 
-</LinearLayout>
+</test.kw.mobileplayer.view.TitleBar>
