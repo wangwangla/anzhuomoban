@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">MobilePlayer</string>
     <string name="starting">正在启动</string>
+    <string name="local_video">本地视频</string>
+    <string name="local_audio">本地音乐</string>
+    <string name="net_video">网络视频</string>
+    <string name="net_audio">网络音乐</string>
 </resources>
