@@ -6,4 +6,5 @@
     <string name="net_video">网络视频</string>
     <string name="net_audio">网络音乐</string>
     <string name="all_net_search">全网速索</string>
+    <string name="vedio_name">视频的名称</string>
 </resources>
