@@ -9,9 +9,9 @@ import android.view.View;
 public abstract class BasePager {
     //构造方法将试图创建  孩子强制继承
     //初始化子页面的数据
-    private Context context;
-
-    private View rootview;
+    protected Context context;
+    public boolean isInitDate = false;
+    public View rootview;
     public BasePager(Context context){
         this.context = context;
         rootview = initView();
