@@ -2,19 +2,18 @@ package test.kw.mobileplayer.pager;
 
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.text.format.Formatter;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -44,9 +43,29 @@ public class VideoPager extends BasePager {
         listView = view.findViewById(R.id.listView);
         tv_media = view.findViewById(R.id.tv_nomedia);
         progressBar = view.findViewById(R.id.pb_loading);
-
+        listView.setOnItemClickListener(new MyOnItemClickListener());
         return view;
     }
+
+    class MyOnItemClickListener implements AdapterView.OnItemClickListener{
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            //listView    点击的某一个视图  位置
+            MediaItem mediaItem = arrayList.get(position);
+            Toast.makeText(context,"mediaItem"+mediaItem.toString(),Toast.LENGTH_SHORT).show();
+
+            //调用系统自带的
+/*            Intent intent = new Intent();
+            intent.setDataAndType(Uri.parse(mediaItem.getData()),"video/*");
+            context.startActivity(intent);*/
+            //使用自己的播放器
+            Intent intent = new Intent(context,SystemVideoPlayer.class);
+            intent.setDataAndType(Uri.parse(mediaItem.getData()),"video/*");
+            context.startActivity(intent);
+        }
+    }
+
     private Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
