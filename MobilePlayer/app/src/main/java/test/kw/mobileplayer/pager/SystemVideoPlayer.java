@@ -96,6 +96,7 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
             // Handle clicks for btnSwitchPlayer
         } else if ( v == btnExit ) {
             // Handle clicks for btnExit
+            finish();
         } else if ( v == btnVideoPre ) {
             // Handle clicks for btnVideoPre
         } else if ( v == btnVideoStartPause ) {
@@ -109,6 +110,18 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
             }
         } else if ( v == btnVideoNext ) {
             // Handle clicks for btnVideoNext
+            if (arrayList!=null&&arrayList.size()>0){
+                position++;
+                if (position<arrayList.size()){
+                    MediaItem mediaItem = arrayList.get(position);
+                    tvName.setText(mediaItem.getName());
+                    videoView.setVideoPath(mediaItem.getData());
+                    //设置按状态
+
+                }
+            }else if (uri!=null){
+
+            }
         } else if ( v == btnVideoSwitchScreen ) {
             // Handle clicks for btnVideoSwitchScreen
         }
