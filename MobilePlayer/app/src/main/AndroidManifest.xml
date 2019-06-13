@@ -16,7 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Maintivity" android:launchMode="singleTask"></activity>
+        <activity android:name=".Maintivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTask"></activity>
         <activity android:name=".pager.SystemVideoPlayer"
             android:configChanges="keyboardHidden|orientation|screenSize"></activity>
     </application>
