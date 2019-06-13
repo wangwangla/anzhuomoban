@@ -79,4 +79,20 @@ public class Maintivity extends FragmentActivity {
         //4、提交
         ft.commit();
     }
+    /*
+    * 启动和销毁过程
+    *   oncreate   onstart  onResume  onPause  onStop  onDestory
+    *
+    * A页面向B页面跳转
+    *   onPause  onCreate   onCreate onResume  onStop
+    *
+    * B页面点击返回
+    *   onPause  onRestart   onStart   onResume   onStop  onDestroy
+    *
+    *
+    *
+    *
+    * 横竖屏切换
+    *    他会先将其销毁，然后重新创建
+     * */
 }
