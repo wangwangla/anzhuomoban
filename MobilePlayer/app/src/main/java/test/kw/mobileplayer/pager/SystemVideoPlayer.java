@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -55,6 +57,12 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
     private int position = 0;
     //监听电量的广播
     private MyReceiver myReceiver;
+    /**
+     * 手势识别器  双击  单机  长按
+     * onTouchEvent()方法将事件传递给手势识别器。
+     * 定义手势识别器
+     */
+    private GestureDetector detector;
     /**
      * Find the Views in the layout<br />
      * <br />
@@ -110,17 +118,21 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
             startPre();
         } else if ( v == btnVideoStartPause ) {
             // Handle clicks for btnVideoStartPause
-            if (videoView.isPlaying()){
-                videoView.pause();
-                btnVideoStartPause.setBackgroundResource(R.drawable.btn_video_start_selector);
-            }else {
-                videoView.start();
-                btnVideoStartPause.setBackgroundResource(R.drawable.btn_video_pause_selector);
-            }
+            startAndPause();
         } else if ( v == btnVideoNext ) {
             startNext();
         } else if ( v == btnVideoSwitchScreen ) {
             // Handle clicks for btnVideoSwitchScreen
+        }
+    }
+
+    private void startAndPause(){
+        if (videoView.isPlaying()){
+            videoView.pause();
+            btnVideoStartPause.setBackgroundResource(R.drawable.btn_video_start_selector);
+        }else {
+            videoView.start();
+            btnVideoStartPause.setBackgroundResource(R.drawable.btn_video_pause_selector);
         }
     }
 
@@ -226,6 +238,28 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         }
         /*屏蔽自带的播放器，自定义播放器*/
         /*videoView.setMediaController(new MediaController(this));*/
+        //初始化手势识别器  实现方法
+        detector = new GestureDetector(this,new GestureDetector.SimpleOnGestureListener(){
+            //长按暂停 播放
+            @Override
+            public void onLongPress(MotionEvent e) {
+                super.onLongPress(e);
+                Toast.makeText(SystemVideoPlayer.this,"长按",Toast.LENGTH_SHORT).show();
+                startAndPause();
+            }
+
+            @Override
+            public boolean onDoubleTap(MotionEvent e) {
+                Toast.makeText(SystemVideoPlayer.this,"双击",Toast.LENGTH_SHORT).show();
+                return super.onDoubleTap(e);
+            }
+
+            @Override
+            public boolean onSingleTapConfirmed(MotionEvent e) {
+                Toast.makeText(SystemVideoPlayer.this,"单机",Toast.LENGTH_SHORT).show();
+                return super.onSingleTapConfirmed(e);
+            }
+        });
     }
     class MyReceiver extends BroadcastReceiver{
 
@@ -354,5 +388,12 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
             myReceiver = null;
         }
         super.onDestroy();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        //必须有的一步  将按下传输给手势识别器
+        detector.onTouchEvent(event);
+        return super.onTouchEvent(event);
     }
 }
