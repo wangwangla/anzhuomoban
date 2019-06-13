@@ -22,7 +22,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import test.kw.mobileplayer.R;
 import test.kw.mobileplayer.domain.MediaItem;
@@ -105,6 +107,7 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
             finish();
         } else if ( v == btnVideoPre ) {
             // Handle clicks for btnVideoPre
+            startPre();
         } else if ( v == btnVideoStartPause ) {
             // Handle clicks for btnVideoStartPause
             if (videoView.isPlaying()){
@@ -115,24 +118,78 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
                 btnVideoStartPause.setBackgroundResource(R.drawable.btn_video_pause_selector);
             }
         } else if ( v == btnVideoNext ) {
-            // Handle clicks for btnVideoNext
-            if (arrayList!=null&&arrayList.size()>0){
-                position++;
-                if (position<arrayList.size()){
-                    MediaItem mediaItem = arrayList.get(position);
-                    tvName.setText(mediaItem.getName());
-                    videoView.setVideoPath(mediaItem.getData());
-                    //设置按状态
-
-                }
-            }else if (uri!=null){
-
-            }
+            startNext();
         } else if ( v == btnVideoSwitchScreen ) {
             // Handle clicks for btnVideoSwitchScreen
         }
     }
 
+    private void startPre() {
+        if (arrayList!=null&&arrayList.size()>0){
+            position--;
+            if (position>=0){
+                MediaItem mediaItem = arrayList.get(position);
+                tvName.setText(mediaItem.getName());
+                videoView.setVideoPath(mediaItem.getData());
+                setButtonStatus();
+            }
+        }
+    }
+
+    private void startNext(){
+        // Handle clicks for btnVideoNext
+        if (arrayList!=null&&arrayList.size()>0){
+            position++;
+            if (position<arrayList.size()){
+                MediaItem mediaItem = arrayList.get(position);
+                tvName.setText(mediaItem.getName());
+                videoView.setVideoPath(mediaItem.getData());
+                //设置按状态
+                setButtonStatus();
+            }
+        }else if (uri!=null){
+            setButtonStatus();
+        }
+    }
+    private void setButtonStatus(){
+
+        if (position==0){
+            btnVideoPre.setBackgroundResource(R.drawable.btn_pre_gray);
+            //设置不可点
+            btnVideoPre.setEnabled(false);
+        }else {
+            btnVideoPre.setBackgroundResource(R.drawable.btn_video_pre_selector);
+            //设置不可点
+            btnVideoPre.setEnabled(true);
+        }
+        if (arrayList.size()==position+1) {
+            btnVideoNext.setBackgroundResource(R.drawable.btn_next_gray);
+            btnVideoNext.setEnabled(false);
+        }else {
+            btnVideoNext.setBackgroundResource(R.drawable.btn_video_next_selector);
+            btnVideoNext.setEnabled(true);
+        }
+    }
+   /* private void setButtonStatus() {
+        if (arrayList!=null&&arrayList.size()>0){
+            if (arrayList.size()==1){
+                //两个按钮设置灰色
+                btnVideoPre.setBackgroundResource(R.drawable.btn_pre_gray);
+                //设置不可点
+                btnVideoPre.setEnabled(false);
+                btnVideoNext.setBackgroundResource(R.drawable.btn_next_gray);
+                btnVideoNext.setEnabled(false);
+            }else
+        }else if (uri!=null){
+            //两个按钮设置灰色
+            btnVideoPre.setBackgroundResource(R.drawable.btn_pre_gray);
+            //设置不可点
+            btnVideoPre.setEnabled(false);
+            btnVideoNext.setBackgroundResource(R.drawable.btn_next_gray);
+            btnVideoNext.setEnabled(false);
+        }
+    }
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -230,6 +287,7 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         @Override
         public void onPrepared(MediaPlayer mp) {
             videoView.start();
+            setButtonStatus();
             //视频总时长
             int duration = videoView.getDuration();
             tvDuration.setText(utils.stringForTime(duration));
@@ -248,6 +306,8 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
                     int currentPosition = videoView.getCurrentPosition();
                     //设置
                     seekbarVideo.setProgress(currentPosition);
+                    //设置系统时间
+                    tvSystemTime.setText(getSystemTime());
                     //每秒一次
                     tvCurrentTime.setText(utils.stringForTime(currentPosition));
                     removeMessages(PROGRESS);
@@ -256,6 +316,16 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
             }
         }
     };
+
+    /**
+     * 系统时间
+     * @return
+     */
+    private String getSystemTime() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss");
+        return simpleDateFormat.format(new Date());
+    }
+
     class MyOnErrorListener implements MediaPlayer.OnErrorListener{
 
         @Override
@@ -268,7 +338,7 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
 
         @Override
         public void onCompletion(MediaPlayer mp) {
-
+            startNext();
         }
     }
 
