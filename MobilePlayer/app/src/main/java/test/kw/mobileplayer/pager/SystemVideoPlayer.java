@@ -30,7 +30,8 @@ public class SystemVideoPlayer extends Activity {
         if (uri != null){
             videoView.setVideoURI(uri);
         }
-        videoView.setMediaController(new MediaController(this));
+        /*屏蔽自带的播放器，自定义播放器*/
+        /*videoView.setMediaController(new MediaController(this));*/
     }
     class MyOnPreparedListener implements MediaPlayer.OnPreparedListener{
 
