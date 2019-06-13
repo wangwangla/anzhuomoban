@@ -1,6 +1,10 @@
 package test.kw.mobileplayer.pager;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,6 +51,8 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
     private static final int PROGRESS = 1;
     private ArrayList<MediaItem> arrayList;
     private int position = 0;
+    //监听电量的广播
+    private MyReceiver myReceiver;
     /**
      * Find the Views in the layout<br />
      * <br />
@@ -133,6 +139,12 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         findViews();
         //得到部分地址
         utils = new Utils();
+        //注册广播
+        myReceiver = new MyReceiver();
+        IntentFilter intentFiler = new IntentFilter();
+        //对某个动作感兴趣
+        intentFiler.addAction(Intent.ACTION_BATTERY_CHANGED);
+        registerReceiver(myReceiver,intentFiler);
         //准备好的监听
         videoView.setOnPreparedListener(new MyOnPreparedListener());
         //出错的监听
@@ -158,6 +170,36 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         /*屏蔽自带的播放器，自定义播放器*/
         /*videoView.setMediaController(new MediaController(this));*/
     }
+    class MyReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            //监听电量变化
+            int level = intent.getIntExtra("level",0);//0~100
+            setBattery(level);
+        }
+    }
+
+    private void setBattery(int level) {
+        if (level<=0){
+            ivBattery.setImageResource(R.drawable.ic_battery_0);
+        }else if (level<=10){
+            ivBattery.setImageResource(R.drawable.ic_battery_10);
+        }else if (level<=30){
+            ivBattery.setImageResource(R.drawable.ic_battery_20);
+        }else if (level<=40){
+            ivBattery.setImageResource(R.drawable.ic_battery_40);
+        }else if (level<=60){
+            ivBattery.setImageResource(R.drawable.ic_battery_60);
+        }else if (level<=80){
+            ivBattery.setImageResource(R.drawable.ic_battery_80);
+        }else if (level<=100){
+            ivBattery.setImageResource(R.drawable.ic_battery_100);
+        }else {
+            ivBattery.setImageResource(R.drawable.ic_battery_100);
+        }
+    }
+
     class MyOnSeekBarChangeListener implements SeekBar.OnSeekBarChangeListener{
         //手指滑动
         @Override
@@ -228,5 +270,19 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         public void onCompletion(MediaPlayer mp) {
 
         }
+    }
+
+    /**
+     * 释放资源，先释放子类，在释放父类
+     *
+     * 初始化先初始化父类，在初始化子类
+     */
+    @Override
+    protected void onDestroy() {
+        if(myReceiver!=null) {
+            unregisterReceiver(myReceiver);
+            myReceiver = null;
+        }
+        super.onDestroy();
     }
 }
