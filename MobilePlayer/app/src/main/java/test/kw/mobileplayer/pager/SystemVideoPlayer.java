@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,8 +17,10 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import test.kw.mobileplayer.R;
+import test.kw.mobileplayer.utils.Utils;
 
 public class SystemVideoPlayer extends Activity implements View.OnClickListener {
+    private Utils utils;
     private VideoView videoView;
     private Uri uri;
     private LinearLayout llTop;
@@ -35,7 +39,7 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
     private Button btnVideoStartPause;
     private Button btnVideoNext;
     private Button btnVideoSwitchScreen;
-
+    private static final int PROGRESS = 1;
     /**
      * Find the Views in the layout<br />
      * <br />
@@ -108,7 +112,7 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         findViews();
         //得到部分地址
-
+        utils = new Utils();
         //准备好的监听
         videoView.setOnPreparedListener(new MyOnPreparedListener());
         //出错的监听
@@ -127,8 +131,32 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         @Override
         public void onPrepared(MediaPlayer mp) {
             videoView.start();
+            //视频总时长
+            int duration = videoView.getDuration();
+            tvDuration.setText(utils.stringForTime(duration));
+            seekbarVideo.setMax(duration);
+            //发消息
+            handler.sendEmptyMessage(PROGRESS);
         }
     }
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case PROGRESS:
+                    //当前播放进度
+                    int currentPosition = videoView.getCurrentPosition();
+                    //设置
+                    seekbarVideo.setProgress(currentPosition);
+                    //每秒一次
+                    tvCurrentTime.setText(utils.stringForTime(currentPosition));
+                    removeMessages(PROGRESS);
+                    sendEmptyMessageDelayed(PROGRESS,1000);
+                    break;
+            }
+        }
+    };
     class MyOnErrorListener implements MediaPlayer.OnErrorListener{
 
         @Override
