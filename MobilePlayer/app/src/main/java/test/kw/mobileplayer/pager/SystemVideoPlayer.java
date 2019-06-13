@@ -6,17 +6,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
 import android.widget.SeekBar;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import java.util.ArrayList;
+
 import test.kw.mobileplayer.R;
+import test.kw.mobileplayer.domain.MediaItem;
 import test.kw.mobileplayer.utils.Utils;
 
 public class SystemVideoPlayer extends Activity implements View.OnClickListener {
@@ -40,6 +45,8 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
     private Button btnVideoNext;
     private Button btnVideoSwitchScreen;
     private static final int PROGRESS = 1;
+    private ArrayList<MediaItem> arrayList;
+    private int position = 0;
     /**
      * Find the Views in the layout<br />
      * <br />
@@ -119,13 +126,50 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         videoView.setOnErrorListener(new MyOnErrorListener());
         //播放完成 的监听
         videoView.setOnCompletionListener(new MyOnComplatetionListener());
+        //seekBar状态监听
+        seekbarVideo.setOnSeekBarChangeListener(new MyOnSeekBarChangeListener());
         uri = getIntent().getData();
-        if (uri != null){
+        //得到bundle中数据
+        arrayList = (ArrayList<MediaItem>) getIntent().getSerializableExtra("videolist");
+        position = getIntent().getIntExtra("position",0);
+        if (arrayList!=null&&arrayList.size()>0){
+            MediaItem mediaItem = arrayList.get(position);
+            tvName.setText(mediaItem.getName());
+            videoView.setVideoPath(mediaItem.getData());
+        }else if (uri != null){
+            tvName.setText(uri.toString());
             videoView.setVideoURI(uri);
+        }else {
+            Toast.makeText(SystemVideoPlayer.this,"无参数",Toast.LENGTH_SHORT).show();
         }
         /*屏蔽自带的播放器，自定义播放器*/
         /*videoView.setMediaController(new MediaController(this));*/
     }
+    class MyOnSeekBarChangeListener implements SeekBar.OnSeekBarChangeListener{
+        //手指滑动
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+           if (fromUser){
+               videoView.seekTo(progress);
+           }
+        }
+        //手指触碰
+
+        /**
+         *
+         * @param seekBar
+         */
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+        //手指移开回调
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    }
+
     class MyOnPreparedListener implements MediaPlayer.OnPreparedListener{
 
         @Override

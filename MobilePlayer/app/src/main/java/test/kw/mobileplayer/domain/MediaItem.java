@@ -1,9 +1,11 @@
 package test.kw.mobileplayer.domain;
 
+import java.io.Serializable;
+
 /**
  * 代表一个视频和音频
  */
-public class MediaItem {
+public class MediaItem implements Serializable {
     private String name;
     private long duration;
     private long size;
