@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.MediaController;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -33,6 +34,9 @@ import test.kw.mobileplayer.domain.MediaItem;
 import test.kw.mobileplayer.utils.Utils;
 
 public class SystemVideoPlayer extends Activity implements View.OnClickListener {
+    private static final int HIDECONTROLLER = 2;
+    //状态栏和底部栏
+    private RelativeLayout media_controller;
     private Utils utils;
     private VideoView videoView;
     private Uri uri;
@@ -55,6 +59,9 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
     private static final int PROGRESS = 1;
     private ArrayList<MediaItem> arrayList;
     private int position = 0;
+
+    private boolean isShowMediaController = false;
+
     //监听电量的广播
     private MyReceiver myReceiver;
     /**
@@ -71,6 +78,7 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
      */
     private void findViews() {
         setContentView(R.layout.activity_system_video_player);
+        media_controller = findViewById(R.id.media_controller);
         videoView = findViewById(R.id.videoview);
         llTop = (LinearLayout)findViewById( R.id.ll_top );
         tvName = (TextView)findViewById( R.id.tv_name );
@@ -124,6 +132,9 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         } else if ( v == btnVideoSwitchScreen ) {
             // Handle clicks for btnVideoSwitchScreen
         }
+        //先移除，再发
+        handler.removeMessages(HIDECONTROLLER);
+        handler.sendEmptyMessageDelayed(HIDECONTROLLER,4000);
     }
 
     private void startAndPause(){
@@ -256,7 +267,17 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
 
             @Override
             public boolean onSingleTapConfirmed(MotionEvent e) {
-                Toast.makeText(SystemVideoPlayer.this,"单机",Toast.LENGTH_SHORT).show();
+                if (isShowMediaController){
+                    //yincang
+                    hideMediaController();
+                    //消除消息
+                    handler.removeMessages(HIDECONTROLLER);
+                }else {
+                    //show
+                    showMediaController();
+                    //show ，we can sengmessage
+                    handler.sendEmptyMessageDelayed(HIDECONTROLLER,4000);
+                }
                 return super.onSingleTapConfirmed(e);
             }
         });
@@ -302,17 +323,17 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         //手指触碰
 
         /**
-         *
+         *手指触碰就移除消息
          * @param seekBar
          */
         @Override
         public void onStartTrackingTouch(SeekBar seekBar) {
-
+            handler.removeMessages(HIDECONTROLLER);
         }
         //手指移开回调
         @Override
         public void onStopTrackingTouch(SeekBar seekBar) {
-
+            handler.sendEmptyMessageDelayed(HIDECONTROLLER,4000);
         }
     }
 
@@ -326,6 +347,7 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
             int duration = videoView.getDuration();
             tvDuration.setText(utils.stringForTime(duration));
             seekbarVideo.setMax(duration);
+            hideMediaController();//默认隐藏
             //发消息
             handler.sendEmptyMessage(PROGRESS);
         }
@@ -346,6 +368,9 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
                     tvCurrentTime.setText(utils.stringForTime(currentPosition));
                     removeMessages(PROGRESS);
                     sendEmptyMessageDelayed(PROGRESS,1000);
+                    break;
+                case HIDECONTROLLER:
+                    hideMediaController();
                     break;
             }
         }
@@ -396,4 +421,13 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         detector.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
+    private void showMediaController(){
+        media_controller.setVisibility(View.VISIBLE);
+        isShowMediaController = true;
+    }
+    private void hideMediaController(){
+        media_controller.setVisibility(View.GONE);
+        isShowMediaController = false;
+    }
+
 }
