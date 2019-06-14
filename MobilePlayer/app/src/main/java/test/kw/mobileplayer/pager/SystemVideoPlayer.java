@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -82,6 +83,17 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
     private int videoHeight;
 
     /**
+     * 调节声音
+     */
+    private AudioManager am;
+    //当前声音
+    private int currentVoice;
+    //最大的音量  0~15
+    private int maxVoice;
+    //默认是
+    private boolean isMute = false;
+
+    /**
      * Find the Views in the layout<br />
      * <br />
      * Auto-created on 2019-06-13 11:13:34 by Android Layout Finder
@@ -115,8 +127,19 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         btnVideoStartPause.setOnClickListener( this );
         btnVideoNext.setOnClickListener( this );
         btnVideoSwitchScreen.setOnClickListener( this );
-    }
 
+        //设置参数
+
+    }
+    public void setFullAndDefault(){
+        if (isFullScreen){
+            //设置默认
+            setVideoType(DEFAULT_SCREEN);
+        }else {
+            //设置全屏
+            setVideoType(FULL_SCREEN);
+        }
+    }
     /**
      * Handle button click events<br />
      * <br />
@@ -126,9 +149,12 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
     @Override
     public void onClick(View v) {
         if ( v == btnVoice ) {
-            // Handle clicks for btnVoice
+            // 静音
+            isMute=!isMute;
+            updataVoice(currentVoice,isMute);
         } else if ( v == btnSwitchPlayer ) {
             // Handle clicks for btnSwitchPlayer
+
         } else if ( v == btnExit ) {
             // Handle clicks for btnExit
             finish();
@@ -142,6 +168,7 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
             startNext();
         } else if ( v == btnVideoSwitchScreen ) {
             // Handle clicks for btnVideoSwitchScreen
+            setFullAndDefault();
         }
         //先移除，再发
         handler.removeMessages(HIDECONTROLLER);
@@ -244,6 +271,10 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         videoView.setOnCompletionListener(new MyOnComplatetionListener());
         //seekBar状态监听
         seekbarVideo.setOnSeekBarChangeListener(new MyOnSeekBarChangeListener());
+
+        //设置声音监听
+        seekbarVoice.setOnSeekBarChangeListener(new VoiceSeekBarChangeListener());
+
         uri = getIntent().getData();
         //得到bundle中数据
         arrayList = (ArrayList<MediaItem>) getIntent().getSerializableExtra("videolist");
@@ -278,13 +309,7 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
              */
             @Override
             public boolean onDoubleTap(MotionEvent e) {
-                if (isFullScreen){
-                    //设置默认
-                    setVideoType(DEFAULT_SCREEN);
-                }else {
-                    //设置全屏
-                    setVideoType(FULL_SCREEN);
-                }
+                setFullAndDefault();
                 return super.onDoubleTap(e);
             }
 
@@ -313,6 +338,51 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         getWindowManager().getDefaultDisplay().getMetrics(metrics);
         screenHight = metrics.heightPixels;
         screenWidth = metrics.widthPixels;
+        //得到音量
+        am = (AudioManager) getSystemService(AUDIO_SERVICE);
+        //最大的
+        maxVoice = am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        //当前的
+        currentVoice = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+        seekbarVoice.setMax(maxVoice);
+        seekbarVoice.setProgress(currentVoice);
+    }
+    class VoiceSeekBarChangeListener implements SeekBar.OnSeekBarChangeListener{
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            if (fromUser){
+                //默认不是静音
+                if (progress>0){
+                    isMute = false;
+                }else {
+                    isMute = true;
+                }
+                updataVoice(progress,isMute);
+            }
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            handler.removeMessages(HIDECONTROLLER);
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+            handler.sendEmptyMessageDelayed(HIDECONTROLLER,4000);
+        }
+    }
+
+    private void updataVoice(int progress,boolean isMute) {
+        //1.将系统的调出来   0不会调用系统的
+        if (isMute) {
+            am.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 1);
+            seekbarVoice.setProgress(progress);
+            currentVoice = progress;
+        }else {
+            am.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0);
+            seekbarVoice.setProgress(0);
+        }
     }
 
     private void setVideoType(int videoType) {
