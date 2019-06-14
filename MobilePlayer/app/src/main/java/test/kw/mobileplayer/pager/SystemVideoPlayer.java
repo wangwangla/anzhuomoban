@@ -209,26 +209,36 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
                 setButtonStatus();
             }
         }else if (uri!=null){
+            tvName.setText(uri.toString());
+            videoView.setVideoURI(uri);
             setButtonStatus();
         }
     }
     private void setButtonStatus(){
+        if (arrayList!=null) {
+            if (position == 0) {
+                btnVideoPre.setBackgroundResource(R.drawable.btn_pre_gray);
+                //设置不可点
+                btnVideoPre.setEnabled(false);
+            } else {
+                btnVideoPre.setBackgroundResource(R.drawable.btn_video_pre_selector);
+                //设置不可点
+                btnVideoPre.setEnabled(true);
+            }
 
-        if (position==0){
+            if (arrayList.size() == position + 1) {
+                btnVideoNext.setBackgroundResource(R.drawable.btn_next_gray);
+                btnVideoNext.setEnabled(false);
+            } else {
+                btnVideoNext.setBackgroundResource(R.drawable.btn_video_next_selector);
+                btnVideoNext.setEnabled(true);
+            }
+        }else {
             btnVideoPre.setBackgroundResource(R.drawable.btn_pre_gray);
             //设置不可点
             btnVideoPre.setEnabled(false);
-        }else {
-            btnVideoPre.setBackgroundResource(R.drawable.btn_video_pre_selector);
-            //设置不可点
-            btnVideoPre.setEnabled(true);
-        }
-        if (arrayList.size()==position+1) {
             btnVideoNext.setBackgroundResource(R.drawable.btn_next_gray);
             btnVideoNext.setEnabled(false);
-        }else {
-            btnVideoNext.setBackgroundResource(R.drawable.btn_video_next_selector);
-            btnVideoNext.setEnabled(true);
         }
     }
    /* private void setButtonStatus() {
