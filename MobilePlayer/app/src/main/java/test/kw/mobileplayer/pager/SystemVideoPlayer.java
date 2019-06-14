@@ -10,21 +10,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
-
+import test.kw.mobileplayer.view.VideoView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -350,6 +346,14 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
             hideMediaController();//默认隐藏
             //发消息
             handler.sendEmptyMessage(PROGRESS);
+            /**
+             * 设置宽和高
+             */
+            //videoView.setVideoSize(100,100);
+            /**
+             * 获取视频真实的宽和高
+             */
+            //videoView.setVideoSize(mp.getVideoWidth(),mp.getVideoHeight());
         }
     }
     private Handler handler = new Handler(){
@@ -429,5 +433,4 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         media_controller.setVisibility(View.GONE);
         isShowMediaController = false;
     }
-
 }

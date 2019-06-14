@@ -4,7 +4,7 @@
     android:background="#000000"
     android:gravity="center"
     android:layout_height="match_parent">
-    <VideoView
+    <test.kw.mobileplayer.view.VideoView
         android:layout_centerInParent="true"
         android:id="@+id/videoview"
         android:layout_width="match_parent"
