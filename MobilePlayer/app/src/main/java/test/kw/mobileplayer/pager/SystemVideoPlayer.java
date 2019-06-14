@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,6 +31,17 @@ import test.kw.mobileplayer.domain.MediaItem;
 import test.kw.mobileplayer.utils.Utils;
 
 public class SystemVideoPlayer extends Activity implements View.OnClickListener {
+    //屏幕大小
+    private int screenWidth = 0;
+    private int screenHight = 0;
+
+    //设置全屏
+    private final int FULL_SCREEN = 1;
+    //设置默认
+    private final int DEFAULT_SCREEN = 2;
+
+    //是否全屏
+    private boolean isFullScreen = false;
     private static final int HIDECONTROLLER = 2;
     //状态栏和底部栏
     private RelativeLayout media_controller;
@@ -66,6 +78,9 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
      * 定义手势识别器
      */
     private GestureDetector detector;
+    private int videoWidth;
+    private int videoHeight;
+
     /**
      * Find the Views in the layout<br />
      * <br />
@@ -255,9 +270,21 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
                 startAndPause();
             }
 
+            /**
+             *
+             * 默认和全屏的切换
+             * @param e
+             * @return
+             */
             @Override
             public boolean onDoubleTap(MotionEvent e) {
-                Toast.makeText(SystemVideoPlayer.this,"双击",Toast.LENGTH_SHORT).show();
+                if (isFullScreen){
+                    //设置默认
+                    setVideoType(DEFAULT_SCREEN);
+                }else {
+                    //设置全屏
+                    setVideoType(FULL_SCREEN);
+                }
                 return super.onDoubleTap(e);
             }
 
@@ -277,7 +304,50 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
                 return super.onSingleTapConfirmed(e);
             }
         });
+
+        //初始化长和宽   过时方法
+        /*screenWidth = getWindowManager().getDefaultDisplay().getWidth();
+        screenHight = getWindowManager().getDefaultDisplay().getHeight();*/
+
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        screenHight = metrics.heightPixels;
+        screenWidth = metrics.widthPixels;
     }
+
+    private void setVideoType(int videoType) {
+        switch (videoType){
+            case FULL_SCREEN:
+                //1.设置屏幕大小----屏幕大小
+                videoView.setVideoSize(screenWidth,screenHight);
+                //2.设置按钮状态
+                btnVideoSwitchScreen.setBackgroundResource(R.drawable.btn_video_switch_screen_default_selector);
+                //3.设置全屏状态
+                isFullScreen = true;
+                break;
+            case DEFAULT_SCREEN:
+                int mVideoWidth = videoWidth;
+                int mVideoHeight = videoHeight;
+
+                int width = screenWidth;
+                int height = screenHight;
+
+                // for compatibility, we adjust size based on aspect ratio
+                if ( mVideoWidth * height  < width * mVideoHeight ) {
+                    //Log.i("@@@", "image too wide, correcting");
+                    width = height * mVideoWidth / mVideoHeight;
+                } else if ( mVideoWidth * height  > width * mVideoHeight ) {
+                    //Log.i("@@@", "image too tall, correcting");
+                    height = width * mVideoHeight / mVideoWidth;
+                }
+                videoView.setVideoSize(width,height);
+                //设置参数
+                btnVideoSwitchScreen.setBackgroundResource(R.drawable.btn_video_switch_screen_full_selector);
+                isFullScreen = false;
+                break;
+        }
+    }
+
     class MyReceiver extends BroadcastReceiver{
 
         @Override
@@ -337,6 +407,8 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
 
         @Override
         public void onPrepared(MediaPlayer mp) {
+            videoWidth =  mp.getVideoWidth();
+            videoHeight = mp.getVideoHeight();
             videoView.start();
             setButtonStatus();
             //视频总时长
@@ -354,6 +426,7 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
              * 获取视频真实的宽和高
              */
             //videoView.setVideoSize(mp.getVideoWidth(),mp.getVideoHeight());
+            setVideoType(DEFAULT_SCREEN);
         }
     }
     private Handler handler = new Handler(){
