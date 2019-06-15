@@ -56,22 +56,14 @@ public class VideoPager extends BasePager {
             MediaItem mediaItem = arrayList.get(position);
             Toast.makeText(context,"mediaItem"+mediaItem.toString(),Toast.LENGTH_SHORT).show();
 
-            //调用系统自带的
-/*            Intent intent = new Intent();
-            intent.setDataAndType(Uri.parse(mediaItem.getData()),"video/*");
-            context.startActivity(intent);*/
-            //使用自己的播放器
+
             Intent intent = new Intent(context,SystemVideoPlayer.class);
-            //intent.setDataAndType(Uri.parse(mediaItem.getData()),"video/*");
-            //传递列表
+
             Bundle bundle = new Bundle();
             bundle.putSerializable("videolist",arrayList);
             intent.putExtras(bundle);
             intent.putExtra("position",position);
             context.startActivity(intent);
-            //传递列表，如果是对象，就需要序列化
-
-
         }
     }
 
