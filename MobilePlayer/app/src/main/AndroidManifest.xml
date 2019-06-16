@@ -50,6 +50,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".pager.AudioPlayerActivity"></activity>
+        <service android:name=".service.MusicPlayService">
+            <intent-filter>
+                <action android:name="kw.test.demo.model_OPEN"></action>
+
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
