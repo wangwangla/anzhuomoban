@@ -9,12 +9,13 @@ import android.view.MotionEvent;
 import test.kw.video_all.R;
 
 public class SplashActivity extends Activity {
-
+    private Handler handler = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        new Handler().postDelayed(new Thread(){
+        handler = new Handler();
+        handler.postDelayed(new Thread(){
             @Override
             public void run() {
                 super.run();
@@ -41,5 +42,15 @@ public class SplashActivity extends Activity {
          */
         startMainActivity();
         return super.onTouchEvent(event);
+    }
+
+    /**
+     * 问题：如果点击之后，快速点击退出，定时到还是会进入
+     * 解决方法：通过取消handler处理
+     */
+    @Override
+    protected void onDestroy() {
+        handler.removeCallbacksAndMessages(null);
+        super.onDestroy();
     }
 }
