@@ -18,5 +18,16 @@
         android:textSize="30sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
+    <Button
+        android:id="@+id/trn_par"
+        android:text="tran_par"
+        android:textSize="30sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/for_back_data"
+        android:text="tran_par"
+        android:textSize="30sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </LinearLayout>

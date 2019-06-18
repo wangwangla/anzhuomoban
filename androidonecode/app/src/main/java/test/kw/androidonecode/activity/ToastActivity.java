@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
 import test.kw.androidonecode.R;
 
+/**
+ * Toast的使用
+ */
 public class ToastActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

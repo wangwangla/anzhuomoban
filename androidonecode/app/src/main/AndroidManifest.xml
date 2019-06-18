@@ -17,7 +17,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.ToastActivity" />
-        <activity android:name=".activity.MeunActivity"></activity>
+        <activity android:name=".activity.MeunActivity" />
+        <activity android:name=".activity.TranParActivity" />
+        <activity android:name=".activity.test.ReciverActivity" />
+        <activity android:name=".activity.ForResultActivity" />
+        <activity android:name=".activity.test.ForResuActivity"></activity>
     </application>
 
 </manifest>
