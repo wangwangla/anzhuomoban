@@ -2,6 +2,7 @@ package test.kw.accountapp;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import test.kw.accountapp.util.DateUtil;
@@ -9,7 +10,7 @@ import test.kw.accountapp.util.DateUtil;
 /**
  * 账目类
  */
-public class RecordBean {
+public class RecordBean implements Serializable {
     //消费类别
     public enum RecordType {
         //输入  支出

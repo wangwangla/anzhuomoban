@@ -8,6 +8,7 @@ import java.util.LinkedList;
 
 import test.kw.accountapp.database.RecordDatebaseHelper;
 import test.kw.accountapp.fragment.MainFragment;
+import test.kw.accountapp.util.DateUtil;
 import test.kw.accountapp.util.GlobalUtil;
 
 /**
@@ -38,12 +39,32 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         GlobalUtil globalUtil = GlobalUtil.getInstance();
         RecordDatebaseHelper r = globalUtil.datebaseHelper;
         datas = r.getAvaliableDate();
+
+        if (!datas.contains(DateUtil.getFormattedDate())){
+            datas.addLast(DateUtil.getFormattedDate());
+        }
+
         for(String date : datas){
             MainFragment fragment = new MainFragment(date);
             fragments.add(fragment);
         }
     }
+
+    public String getDateStr(int index){
+        return datas.get(index);
+    }
+
+
     public int getCurrentItem(){
         return datas.size()-1;
+    }
+
+    public void reLoad() {
+        for (MainFragment mainFragment : fragments){
+            mainFragment.reload();
+        }
+    }
+    public int getTotalCoast(int index){
+        return fragments.get(index).getTotalCost();
     }
 }

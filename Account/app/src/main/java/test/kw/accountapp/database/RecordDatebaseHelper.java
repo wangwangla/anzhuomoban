@@ -66,7 +66,7 @@ public class RecordDatebaseHelper extends SQLiteOpenHelper {
      * 删除
      * @param uuid
      */
-    private void removeRecord(String uuid){
+    public void removeRecord(String uuid){
         SQLiteDatabase database = this.getWritableDatabase();
         database.delete(DB_NAME,"uuid=?",new String[]{uuid});
     }

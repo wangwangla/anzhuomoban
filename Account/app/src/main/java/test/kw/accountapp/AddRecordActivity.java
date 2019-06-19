@@ -21,6 +21,8 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
     //更新顶部钱数
     private TextView amountText;
     //
+    private boolean isEdit = false;
+    RecordBean recordBean = new RecordBean();
     private String category = "General";
     //消费类型  花费
     private RecordBean.RecordType type = RecordBean.RecordType.RECODE_TYPR_EXPENSE;
@@ -43,6 +45,12 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
         categoryAdapter.notifyDataSetChanged();
 
         categoryAdapter.setOnCategoryClickListener(this);
+
+        RecordBean recordBean = (RecordBean) getIntent().getSerializableExtra("record");
+        if (recordBean!=null){
+            isEdit = true;
+            this.recordBean = recordBean;
+        }
     }
 
     public void getKeyboardType(){
@@ -83,7 +91,7 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
             public void onClick(View v) {
                 if (!userInput.equals("")) {
                     double amount = Double.valueOf(userInput);
-                    RecordBean recordBean = new RecordBean();
+
                     recordBean.setAmount(amount);
                     if (type == RecordBean.RecordType.RECODE_TYPR_EXPENSE){
                         recordBean.setRecordType(1);
@@ -92,7 +100,11 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
                     }
                     recordBean.setCategory(categoryAdapter.getSelected());
                     recordBean.setRemark(editText.getText().toString());
-                    GlobalUtil.getInstance().datebaseHelper.addRecord(recordBean);
+                    if (isEdit){
+                        GlobalUtil.getInstance().datebaseHelper.editRecord(recordBean.getUuid(),recordBean);
+                    }else {
+                        GlobalUtil.getInstance().datebaseHelper.addRecord(recordBean);
+                    }
                     Log.d("Insert",recordBean.getUuid());
                     finish();
                 }
