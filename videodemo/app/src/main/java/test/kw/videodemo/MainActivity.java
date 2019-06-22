@@ -29,7 +29,7 @@ import io.vov.vitamio.widget.VideoView;
  */
 public class MainActivity extends Activity implements MediaPlayer.OnBufferingUpdateListener, MediaPlayer.OnInfoListener {
     //设置url
-    private String path = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+    private String path = "http://183.207.248.71:80/cntv/live1/CCTV-15/cctv-15";
     private Uri uri;
     //进度条
     private ProgressBar pb;

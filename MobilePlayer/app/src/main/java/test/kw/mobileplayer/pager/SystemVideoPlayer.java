@@ -572,10 +572,39 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         super.onDestroy();
     }
 
+    //开始值
+    private float startY;
+    //屏幕高
+    private float touchRang;
+    //按下的音量
+    private int mVol;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         //必须有的一步  将按下传输给手势识别器
         detector.onTouchEvent(event);
+/*        switch (event.getAction()){
+            case MotionEvent.ACTION_DOWN:
+                startY = event.getY();
+                mVol = am.getStreamVolume(AudioManager.STREAM_MUSIC);
+                touchRang = Math.min(screenHight,screenWidth);
+                handler.removeCallbacksAndMessages(HIDECONTROLLER);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                //记录值
+                float endY = event.getY();
+                float distanceY = startY - endY;
+                float delta = (distanceY/touchRang)*maxVoice;
+                int voice = (int) Math.min(Math.max(mVol+delta,0),maxVoice);
+                if (delta!=0){
+                    isMute = false;
+                    updataVoice(voice,isMute);
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                handler.sendEmptyMessageDelayed(HIDECONTROLLER,4000);
+                break;
+        }*/
         return super.onTouchEvent(event);
     }
     private void showMediaController(){
@@ -586,4 +615,6 @@ public class SystemVideoPlayer extends Activity implements View.OnClickListener 
         media_controller.setVisibility(View.GONE);
         isShowMediaController = false;
     }
+
+    //声音按键操作，声音进度条也发生更新。
 }
